@@ -1,12 +1,17 @@
 import React from 'react'
-import { MainPage } from './pages/main/Main'
+import { BrowserRouter } from '../node_modules/react-router-dom/dist/index'
+import { AppRoutes } from './routes/Routes'
 
 interface AppProps {
   tab: string
 }
 
 const App: React.FC<AppProps> = () => {
-  return <MainPage />
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  )
 }
 
 export default App

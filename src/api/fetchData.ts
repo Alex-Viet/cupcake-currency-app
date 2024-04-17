@@ -7,5 +7,6 @@ export const fetchData = async (serial: string) => {
     return data.rates
   } catch (error) {
     console.error('Error fetching data:', error)
+    throw error
   }
 }

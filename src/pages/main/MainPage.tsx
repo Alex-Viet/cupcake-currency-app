@@ -7,32 +7,33 @@ export const MainPage: React.FC = () => {
   const [rates, setRates] = useState<Record<string, Record<string, number>>>({})
   const [currencies, setCurrencies] = useState<string[]>([])
   const [minRate, setMinRate] = useState<number | null>(null)
+  const [continuePolling, setContinuePolling] = useState(true)
 
   useEffect(() => {
     setCurrencies(Object.keys(rates?.first ?? {}))
   }, [rates])
 
-  useEffect(() => {
-    const fetchDataAsync = async () => {
+  const longPolling = async () => {
+    while (continuePolling) {
       try {
         const [first, second, third] = await Promise.all([
           fetchData('first'),
           fetchData('second'),
           fetchData('third'),
         ])
-
-        setRates((prevRates) => ({
-          ...prevRates,
-          first,
-          second,
-          third,
-        }))
+        setRates({ first, second, third })
       } catch (error) {
         console.error('Error fetching data:', error)
       }
+      await new Promise((resolve) => setTimeout(resolve, 5000))
     }
+  }
 
-    fetchDataAsync()
+  useEffect(() => {
+    longPolling()
+    return () => {
+      setContinuePolling(false)
+    }
   }, [])
 
   useEffect(() => {

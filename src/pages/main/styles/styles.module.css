@@ -18,3 +18,8 @@
 .table th {
   font-weight: bold;
 }
+
+.highlight {
+  background-color: #4796e0 !important;
+  color: #fff;
+}

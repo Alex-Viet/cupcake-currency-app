@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { fetchData } from '../../api/fetchData'
-import { container, table } from './styles/styles.module.css'
+import { container, table, highlight } from './styles/styles.module.css'
+import { findMinRate } from '../../utils/findMin'
 
 export const MainPage: React.FC = () => {
   const [rates, setRates] = useState<Record<string, Record<string, number>>>({})
   const [currencies, setCurrencies] = useState<string[]>([])
+  const [minRate, setMinRate] = useState<number | null>(null)
 
   useEffect(() => {
     setCurrencies(Object.keys(rates?.first ?? {}))
@@ -33,6 +35,11 @@ export const MainPage: React.FC = () => {
     fetchDataAsync()
   }, [])
 
+  useEffect(() => {
+    const minRateValue = findMinRate(rates, currencies)
+    setMinRate(minRateValue)
+  }, [rates, currencies])
+
   return (
     <div className={container}>
       <table className={table}>
@@ -49,7 +56,10 @@ export const MainPage: React.FC = () => {
             <tr key={currency}>
               <td>{currency}/CUPCAKE</td>
               {Object.values(rates).map((pairData) => (
-                <td key={pairData[currency]}>
+                <td
+                  key={pairData[currency]}
+                  className={pairData[currency] === minRate ? highlight : ''}
+                >
                   {pairData[currency].toFixed(3)}
                 </td>
               ))}

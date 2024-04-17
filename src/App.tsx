@@ -1,12 +1,18 @@
 import React from 'react'
-import { MainPage } from './pages/main/Main'
+import { HashRouter } from 'react-router-dom'
+import { AppRoutes } from './routes/Routes'
+import './styles.css'
 
 interface AppProps {
   tab: string
 }
 
 const App: React.FC<AppProps> = () => {
-  return <MainPage />
+  return (
+    <HashRouter>
+      <AppRoutes />
+    </HashRouter>
+  )
 }
 
 export default App

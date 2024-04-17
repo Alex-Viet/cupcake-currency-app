@@ -7,7 +7,7 @@ export const MainPage: React.FC = () => {
   const [rates, setRates] = useState<Record<string, Record<string, number>>>({})
   const [currencies, setCurrencies] = useState<string[]>([])
   const [minRate, setMinRate] = useState<number | null>(null)
-  const [continuePolling, setContinuePolling] = useState(true)
+  const [continuePolling, setContinuePolling] = useState<boolean>(true)
 
   useEffect(() => {
     setCurrencies(Object.keys(rates?.first ?? {}))

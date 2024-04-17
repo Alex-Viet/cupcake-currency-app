@@ -4,6 +4,11 @@ import { container, table } from './styles/styles.module.css'
 
 export const MainPage: React.FC = () => {
   const [rates, setRates] = useState<Record<string, Record<string, number>>>({})
+  const [currencies, setCurrencies] = useState<string[]>([])
+
+  useEffect(() => {
+    setCurrencies(Object.keys(rates?.first ?? {}))
+  }, [rates])
 
   useEffect(() => {
     const fetchDataAsync = async () => {
@@ -34,18 +39,20 @@ export const MainPage: React.FC = () => {
         <thead>
           <tr>
             <th>Pair name/market</th>
-            <th>First</th>
-            <th>Second</th>
-            <th>Third</th>
+            {Object.keys(rates).map((pair) => (
+              <th key={pair}>{pair}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {Object.entries(rates).map(([key, value]) => (
-            <tr key={key}>
-              <td>{key}</td>
-              <td>{value.RUB.toFixed(3)}</td>
-              <td>{value.USD.toFixed(3)}</td>
-              <td>{value.EUR.toFixed(3)}</td>
+          {currencies.map((currency) => (
+            <tr key={currency}>
+              <td>{currency}/CUPCAKE</td>
+              {Object.values(rates).map((pairData) => (
+                <td key={pairData[currency]}>
+                  {pairData[currency].toFixed(3)}
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>
